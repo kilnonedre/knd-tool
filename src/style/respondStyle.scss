@@ -1,0 +1,38 @@
+/* 屏幕尺寸列表 */
+$breakpoints: (
+  'phone': (
+    320px,
+    480px
+  ),
+  'pad': (
+    481px,
+    768px
+  ),
+  'notebook': (
+    769px,
+    1024px
+  ),
+  'desktop': (
+    1025px,
+    1200px
+  ),
+  'tv': (
+    1201px
+  )
+);
+
+/* 媒体查询进行屏幕适配 */
+@mixin respond-to($breakName) {
+  $bp: map-get($breakpoints, $breakName);
+  @if type-of($bp) == 'list' {
+    $min: nth($bp, 1);
+    $max: nth($bp, 2);
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $bp) {
+      @content;
+    }
+  }
+}
