@@ -1,7 +1,8 @@
 import React from 'react'
+import Front from '@/view/front'
 
-const Home = () => {
-  return <div>home</div>
+const LoginIndex = () => {
+  return <Front />
 }
 
-export default Home
+export default LoginIndex

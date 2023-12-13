@@ -36,7 +36,7 @@ export const fetchWithInterceptor = (url: string, options: object) => {
         toast.error(errMsg)
         if (response.status === 401) {
           router && router.push('/')
-          localStorage.removeItem('DST_Token')
+          localStorage.removeItem('KND_TOKEN')
         }
         throw new Error('网络请求错误: ' + response.status)
       }

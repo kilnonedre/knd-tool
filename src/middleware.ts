@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import { response, tryRes } from './util/backend'
 import { verifyToken } from './util/backend/token'
 
-const noVerifyApiList = ['/users', '/databases']
+const noVerifyApiList = ['/knd_tool/users', '/databases']
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl

@@ -18,7 +18,7 @@ const MainLayout = ({ children }: types.ConfigProps) => {
 
   useEffect(() => {
     const index = noVerifyPageList.indexOf(pathname)
-    if (index === -1 && !localStorage.getItem('DST_Token')) {
+    if (index === -1 && !localStorage.getItem('KND_TOKEN')) {
       toast.error('Token 不存在，请重新登录')
       router.push('/')
     }

@@ -1,12 +1,18 @@
 import mysql from 'mysql'
-import types from './indexType.d'
+
+const createAccount = (database: string) =>
+  mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'nmdzz000',
+    database,
+  })
 
 const query = (
-  accountData: types.ConfigAccountData,
+  pool: mysql.Pool,
   sql: string,
   values?: Array<Number | String>
 ) => {
-  const pool = mysql.createPool(accountData)
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) reject(err)
@@ -21,4 +27,7 @@ const query = (
   })
 }
 
-export default query
+const kndToolPool = createAccount('knd_tool')
+
+export const kndToolQuery = (sql: string, values?: Array<any>) =>
+  query(kndToolPool, sql, values)

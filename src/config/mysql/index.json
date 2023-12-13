@@ -1,0 +1,15 @@
+{
+  "knd_tool": [
+    {
+      "name": "users",
+      "data": {
+        "id": "INT",
+        "nickname": "CHAR(255)",
+        "password": "CHAR(255)",
+        "create_time": "INT",
+        "update_time": "INT"
+      },
+      "primaryKey": "id"
+    }
+  ]
+}

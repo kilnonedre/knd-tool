@@ -1,0 +1,83 @@
+.login {
+  background-image: url('/image/login/login-bk.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  @include flex();
+  &::before {
+    content: '';
+    position: absolute;
+    filter: blur(4px);
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background: inherit;
+  }
+  &-panel {
+    background: inherit;
+    position: relative;
+    z-index: 2;
+    width: 80%;
+    min-width: 650px;
+    max-width: 850px;
+    aspect-ratio: 2/1;
+    border-radius: 4px;
+    overflow: hidden;
+    &-main {
+      height: 100%;
+      aspect-ratio: 1/1;
+      background-color: #ffffff;
+      margin-left: auto;
+      border-radius: 4px;
+      @include flex();
+    }
+  }
+}
+
+.form {
+  width: 80%;
+  &-header {
+    font-family: 'agendaKing';
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  &-body {
+    &-input {
+      :global(.h-12) {
+        height: 2.5rem;
+      }
+      margin-top: 1rem;
+    }
+  }
+  &-tip {
+    @include flex($x: space-between);
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+    &-checkbox {
+      @include flex($x: flex-start, $xGap: 0.25rem);
+      cursor: pointer;
+      input[type='checkbox'] {
+        cursor: pointer;
+      }
+    }
+    &-forget {
+      cursor: pointer;
+    }
+  }
+  &-footer {
+    @include flex($dir: column, $x: stretch, $y: stretch, $yGap: 0.5rem);
+    button {
+      width: 100%;
+    }
+    &-login {
+      background-color: #000000;
+    }
+    &-register {
+      border-color: #000000;
+      color: #000000;
+    }
+  }
+}

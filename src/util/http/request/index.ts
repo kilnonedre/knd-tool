@@ -5,7 +5,7 @@ const isFormData = (object: object | undefined) => {
 }
 
 const getToken = () => {
-  const token = localStorage.getItem('DST_Token')
+  const token = localStorage.getItem('KND_TOKEN')
   if (token) return { headers: { Authorization: `Bearer ${token}` } }
   return {}
 }
