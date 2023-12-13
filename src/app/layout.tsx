@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: mainLayoutTypes.ConfigProps) => {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body>
         <MainLayout>{children}</MainLayout>
       </body>
