@@ -8,12 +8,8 @@ const createAccount = (database: string) =>
     database,
   })
 
-const query = (
-  pool: mysql.Pool,
-  sql: string,
-  values?: Array<Number | String>
-) => {
-  return new Promise((resolve, reject) => {
+const query = (pool: mysql.Pool, sql: string, values?: Array<any>) =>
+  new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) reject(err)
       else {
@@ -25,7 +21,6 @@ const query = (
       }
     })
   })
-}
 
 const kndToolPool = createAccount('knd_tool')
 
