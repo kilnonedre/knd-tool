@@ -27,7 +27,7 @@ const MainLayout = ({ children }: types.ConfigProps) => {
   return (
     <>
       <NextUIProvider>{children}</NextUIProvider>
-      <Toaster position="bottom-right" richColors />
+      <Toaster position="bottom-right" richColors closeButton />
     </>
   )
 }
