@@ -7,15 +7,6 @@ export const response = (
   msg: string = 'success'
 ) => NextResponse.json({ code, data, msg }, { status })
 
-export const tryRes = async (fun: Function, ...args: any) => {
-  try {
-    const result = await fun(...args)
-    return { isSuccess: true, data: result }
-  } catch (error: any) {
-    return { isSuccess: false, error: error }
-  }
-}
-
 export const dataNow = () => Math.round(Number(new Date()) / 1000)
 
 export const formatFormData = (keyList: Array<string>, formData: FormData) => {

@@ -1,4 +1,5 @@
-import { response, tryRes } from '@/util/backend'
+import { response } from '@/util/backend'
+import { tryCatch } from '@/util/universal'
 import types from './loginType.d'
 import userTypes from '../userType.d'
 import { NextRequest } from 'next/server'
@@ -18,7 +19,7 @@ const postFun = async ({ nickname, password }: types.ConfigPostParams) => {
 
 export const POST = async (request: NextRequest) => {
   const req = await request.json()
-  const { isSuccess, data, error } = await tryRes(postFun, req)
+  const { isSuccess, data, error } = await tryCatch(postFun, req)
   if (isSuccess) return response(200, 200, data)
   return response(200, 400, false, error.message)
 }

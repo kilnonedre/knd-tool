@@ -1,4 +1,5 @@
-import { response, tryRes } from '@/util/backend'
+import { response } from '@/util/backend'
+import { tryCatch } from '@/util/universal'
 import databaseList from '@/config/mysql/index.json'
 import { NextRequest } from 'next/server'
 import types from './databaseType'
@@ -16,7 +17,7 @@ export const GET = async (request: NextRequest) => {
   const query = request.nextUrl.searchParams
   const database = query.get('database')
   const params = { database }
-  const { isSuccess, data, error } = await tryRes(getFun, params)
+  const { isSuccess, data, error } = await tryCatch(getFun, params)
   if (isSuccess)
     return response(200, 200, data, `${data ? '不' : ''}需要对表进行修改`)
   return response(200, 400, false, error.message)
@@ -45,7 +46,7 @@ const postFun = async ({ database }: types.ConfigParams) => {
 
 export const POST = async (request: NextRequest) => {
   const req = await request.json()
-  const { isSuccess, error } = await tryRes(postFun, req)
+  const { isSuccess, error } = await tryCatch(postFun, req)
   if (isSuccess) return response(200, 200, true)
   return response(200, 400, false, error.message)
 }
@@ -56,7 +57,7 @@ const putFun = async () => {
 }
 
 export const PUT = async () => {
-  const { isSuccess, error } = await tryRes(putFun)
+  const { isSuccess, error } = await tryCatch(putFun)
   if (isSuccess) return response(200, 200, true)
   return response(200, 400, false, error.message)
 }

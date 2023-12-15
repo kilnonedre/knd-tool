@@ -3,3 +3,18 @@ export const sleep = (second: number) =>
 
 export const deepClone = (data: Array<any> | Object) =>
   JSON.parse(JSON.stringify(data))
+
+export const tryCatch = async (fun: Function, ...args: any) => {
+  try {
+    const result = await fun(...args)
+    return { isSuccess: true, data: result }
+  } catch (error: any) {
+    return { isSuccess: false, error: error }
+  }
+}
+
+export const asyncHandle = (fun: Function, ...args: any) => {
+  return fun(...args)
+    .then((result: Response) => [result, null])
+    .catch((err: Error) => [null, err])
+}

@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
-import { response, tryRes } from './util/backend'
+import { response } from './util/backend'
+import { tryCatch } from './util/universal'
 import { verifyToken } from './util/backend/token'
 
 const noVerifyApiList = ['/knd_tool/users', '/databases']
@@ -14,7 +15,7 @@ export const middleware = async (request: NextRequest) => {
         isNecessaryVerifyApi = false
     })
     if (isNecessaryVerifyApi) {
-      const { isSuccess, error } = await tryRes(verifyToken, authorization)
+      const { isSuccess, error } = await tryCatch(verifyToken, authorization)
       if (!isSuccess) return response(401, 401, false, error.message)
     }
   }

@@ -8,6 +8,7 @@ import { CheckDatabase, CreateDatabase } from '@/api/universal'
 import { Register, Login } from '@/api/kndTool'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { asyncHandle } from '@/util/universal'
 
 const Front = () => {
   const [isNeed, setIsNeed] = useState(false)
@@ -15,6 +16,9 @@ const Front = () => {
   const [nicknameErrMsg, setNicknameErrMsg] = useState('')
   const [password, setPassword] = useState('')
   const [passwordErrMsg, setPasswordErrMsg] = useState('')
+  const [loginLoading, setLoginLoading] = useState(false)
+  const [registerLoading, setRegisterLoading] = useState(false)
+  const [createLoading, setCreateLoading] = useState(false)
 
   const router = useRouter()
 
@@ -30,7 +34,12 @@ const Front = () => {
   }
 
   const createDatabase = async () => {
-    const response = await CreateDatabase({ database: 'knd_tool' })
+    setCreateLoading(true)
+    const [response, err] = await asyncHandle(CreateDatabase, {
+      database: 'knd_tool',
+    })
+    setCreateLoading(false)
+    if (err) return
     const { code, msg } = await response.json()
     if (code !== 200) return toast.error(msg)
     toast.success('数据库创建成功')
@@ -56,7 +65,10 @@ const Front = () => {
   const login = async () => {
     if (!check()) return
     const params = { nickname, password }
-    const response = await Login(params)
+    setLoginLoading(true)
+    const [response, err] = await asyncHandle(Login, params)
+    setLoginLoading(false)
+    if (err) return
     const { code, data, msg } = await response.json()
     if (code !== 200) return toast.error(msg)
     toast.success('登录成功')
@@ -67,7 +79,10 @@ const Front = () => {
   const register = async () => {
     if (!check()) return
     const params = { nickname, password }
-    const response = await Register(params)
+    setRegisterLoading(true)
+    const [response, err] = await asyncHandle(Register, params)
+    setRegisterLoading(false)
+    if (err) return
     const { code, msg } = await response.json()
     if (code !== 200) return toast.error(msg)
     toast.success('注册成功')
@@ -134,7 +149,12 @@ const Front = () => {
             </div>
             <div className={styles['form-footer']}>
               {isNeed ? (
-                <Button color="danger" size="sm" onPress={createDatabase}>
+                <Button
+                  color="danger"
+                  size="sm"
+                  isLoading={createLoading}
+                  onPress={createDatabase}
+                >
                   创建数据库
                 </Button>
               ) : (
@@ -143,6 +163,7 @@ const Front = () => {
                     className={styles['form-footer-login']}
                     color="primary"
                     size="sm"
+                    isLoading={loginLoading}
                     onPress={login}
                   >
                     登录
@@ -152,6 +173,7 @@ const Front = () => {
                     color="primary"
                     size="sm"
                     variant="bordered"
+                    isLoading={registerLoading}
                     onPress={register}
                   >
                     注册
