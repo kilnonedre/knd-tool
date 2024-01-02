@@ -18,3 +18,9 @@ export const asyncHandle = (fun: Function, ...args: any) => {
     .then((result: Response) => [result, null])
     .catch((err: Error) => [null, err])
 }
+
+export const getRandomInt = (min: number, max: number) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}

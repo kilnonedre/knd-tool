@@ -1,0 +1,30 @@
+.checkbox {
+  display: relative;
+  &-panel {
+    @include flex($x: flex-start, $xGap: 0.25rem);
+    cursor: pointer;
+  }
+  &__input {
+    position: absolute;
+  }
+  &__fake {
+    width: 15px;
+    aspect-ratio: 1/1;
+    border: 1px solid var(--checkbox-border-color);
+    border-radius: 3px;
+    position: relative;
+    background-color: var(--checkbox-background-color);
+    &::after {
+      content: '';
+      position: absolute;
+      display: var(--checkbox-display);
+      left: 4px;
+      top: 1px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+}

@@ -8,7 +8,51 @@ import { CheckDatabase, CreateDatabase } from '@/api/universal'
 import { Register, Login } from '@/api/kndTool'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { asyncHandle } from '@/util/universal'
+import { asyncHandle, getRandomInt } from '@/util/universal'
+import Checkbox from '@/component/checkbox'
+
+const bkList = [
+  {
+    mark: 'fir',
+    styles: {
+      '--front-background-image': `url('/image/login/login-fir.jpg')`,
+      '--front-background-image-clip': `url('/image/login/login-fir-clip.jpg')`,
+      '--front-color': '#000000',
+    },
+  },
+  {
+    mark: 'sec',
+    styles: {
+      '--front-background-image': `url('/image/login/login-sec.jpg')`,
+      '--front-background-image-clip': `url('/image/login/login-sec-clip.jpg')`,
+      '--front-color': '#573C8F',
+    },
+  },
+  {
+    mark: 'thi',
+    styles: {
+      '--front-background-image': `url('/image/login/login-thi.jpg')`,
+      '--front-background-image-clip': `url('/image/login/login-thi-clip.jpg')`,
+      '--front-color': '#361c31',
+    },
+  },
+  {
+    mark: 'fou',
+    styles: {
+      '--front-background-image': `url('/image/login/login-fou.jpg')`,
+      '--front-background-image-clip': `url('/image/login/login-fou-clip.jpg')`,
+      '--front-color': '#d9badc',
+    },
+  },
+  {
+    mark: 'fif',
+    styles: {
+      '--front-background-image': `url('/image/login/login-fif.jpg')`,
+      '--front-background-image-clip': `url('/image/login/login-fif-clip.jpg')`,
+      '--front-color': '#b8b6c3',
+    },
+  },
+]
 
 const Front = () => {
   const [isNeed, setIsNeed] = useState(false)
@@ -19,6 +63,14 @@ const Front = () => {
   const [loginLoading, setLoginLoading] = useState(false)
   const [registerLoading, setRegisterLoading] = useState(false)
   const [createLoading, setCreateLoading] = useState(false)
+  const [theme, setTheme] = useState({
+    mark: 'fir',
+    styles: {
+      '--front-background-image': `url('/image/login/login-fir.jpg')`,
+      '--front-background-image-clip': `url('/image/login/login-fir-clip.jpg')`,
+      '--front-color': '#000000',
+    },
+  })
 
   const router = useRouter()
 
@@ -99,9 +151,19 @@ const Front = () => {
     setPassword(e)
   }
 
+  const changeTheme = () => {
+    const bkListFilter = bkList.filter(bk => bk.mark !== theme.mark)
+    const index = getRandomInt(0, bkListFilter.length - 1)
+    setTheme(bkListFilter[index])
+  }
+
   return (
-    <div className={styles['login']}>
+    <div
+      className={styles['login']}
+      style={theme.styles as React.CSSProperties}
+    >
       <div className={styles['login-panel']}>
+        <div className={styles['login-panel-bk']}></div>
         <div className={styles['login-panel-main']}>
           <div className={styles['form']}>
             <div className={styles['form-header']}>Welcome To Yume</div>
@@ -132,18 +194,14 @@ const Front = () => {
               />
             </div>
             <div className={styles['form-tip']}>
-              <label className={styles['form-tip-checkbox']}>
-                <input
-                  type="checkbox"
-                  checked={false}
-                  onChange={() => notYetDeveloped()}
-                />
-                记住账号
-              </label>
-              <p
-                className={styles['form-tip-forget']}
-                onClick={() => notYetDeveloped()}
-              >
+              <Checkbox
+                text="记住账号"
+                color={theme.styles['--front-color']}
+                onChange={() => {
+                  notYetDeveloped()
+                }}
+              />
+              <p className={styles['form-tip-forget']} onClick={changeTheme}>
                 忘记密码？
               </p>
             </div>

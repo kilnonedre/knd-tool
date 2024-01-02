@@ -1,5 +1,5 @@
 .login {
-  background-image: url('/image/login/login-bk.jpg');
+  background-image: var(--front-background-image);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -17,7 +17,6 @@
     background: inherit;
   }
   &-panel {
-    background: inherit;
     position: relative;
     z-index: 2;
     width: 80%;
@@ -26,12 +25,21 @@
     aspect-ratio: 2/1;
     border-radius: 4px;
     overflow: hidden;
+    @include flex();
+    box-shadow: 0 0 10px var(--front-color);
+    &-bk {
+      background-image: var(--front-background-image-clip);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+      width: 100%;
+    }
     &-main {
       height: 100%;
       aspect-ratio: 1/1;
       background-color: #ffffff;
       margin-left: auto;
-      border-radius: 4px;
       @include flex();
     }
   }
@@ -39,6 +47,7 @@
 
 .form {
   width: 80%;
+  color: var(--front-color);
   &-header {
     font-family: 'agendaKing';
     font-weight: bold;
@@ -50,19 +59,18 @@
         height: 2.5rem;
       }
       margin-top: 1rem;
+      input {
+        color: var(--front-color) !important;
+        &::placeholder {
+          color: var(--front-color);
+        }
+      }
     }
   }
   &-tip {
     @include flex($x: space-between);
     margin: 0.5rem 0;
     font-size: 0.875rem;
-    &-checkbox {
-      @include flex($x: flex-start, $xGap: 0.25rem);
-      cursor: pointer;
-      input[type='checkbox'] {
-        cursor: pointer;
-      }
-    }
     &-forget {
       cursor: pointer;
     }
@@ -73,11 +81,11 @@
       width: 100%;
     }
     &-login {
-      background-color: #000000;
+      background-color: var(--front-color);
     }
     &-register {
-      border-color: #000000;
-      color: #000000;
+      border-color: var(--front-color);
+      color: var(--front-color);
     }
   }
 }
