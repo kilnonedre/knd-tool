@@ -1,0 +1,37 @@
+.sudoku {
+  background-color: #f6f6f6;
+  &-fun {
+    @include flex($xGap: 2rem);
+    margin: 1rem 0;
+  }
+  &-statistic {
+    @include flex($xGap: 0.25rem);
+  }
+}
+
+.fun {
+  @include flex($dir: column);
+  cursor: pointer;
+}
+
+.statistic {
+  @include flex($dir: column);
+  background-color: #ffffff;
+  border: 1px solid #ebebeb;
+  box-shadow: 0 0.1rem 0 #979797;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #ededed;
+  }
+  &-number {
+    font-size: 2rem;
+    line-height: 1em;
+    color: #245ccb;
+  }
+  &-total {
+    font-size: 0.875rem;
+    line-height: 1em;
+  }
+}

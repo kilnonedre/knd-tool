@@ -1,0 +1,31 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  aspect-ratio: 1/1;
+  border: 1px solid #575757;
+  border-color: var(--grid-border-color);
+  width: 100%;
+  height: 100%;
+  &-item {
+    color: var(--grid-color);
+    font-size: 2rem;
+    line-height: 1em;
+    border: 1px solid #575757;
+    border-color: var(--grid-border-color);
+    @include flex();
+    cursor: pointer;
+    &--active {
+      background-color: #92b0fb;
+    }
+    &--adjacent {
+      background-color: #e3e3e3;
+    }
+    &--same {
+      background-color: #b6c9e3;
+    }
+    &--error {
+      background-color: #ffc1d1;
+    }
+  }
+}
