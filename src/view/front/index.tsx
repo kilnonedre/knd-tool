@@ -79,7 +79,7 @@ const Front = () => {
   }, [])
 
   const checkDatabase = async () => {
-    const response = await CheckDatabase({ database: 'knd_tool' })
+    const response = await CheckDatabase()
     const { code, data, msg } = await response.json()
     if (code !== 200) return toast.error(msg)
     setIsNeed(!data)
@@ -87,9 +87,7 @@ const Front = () => {
 
   const createDatabase = async () => {
     setCreateLoading(true)
-    const [response, err] = await asyncHandle(CreateDatabase, {
-      database: 'knd_tool',
-    })
+    const [response, err] = await asyncHandle(CreateDatabase)
     setCreateLoading(false)
     if (err) return
     const { code, msg } = await response.json()

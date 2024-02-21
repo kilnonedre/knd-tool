@@ -1,7 +1,8 @@
 import React from 'react'
+import Introduce from '@/view/introduce'
 
-const Introduce = () => {
-  return <div>introduce</div>
+const IntroduceIndex = () => {
+  return <Introduce />
 }
 
-export default Introduce
+export default IntroduceIndex

@@ -1,31 +1,27 @@
 import { response } from '@/util/backend'
 import { tryCatch } from '@/util/universal'
 import databaseList from '@/config/mysql/index.json'
-import { NextRequest } from 'next/server'
 import types from './databaseType'
 import { kndToolQuery } from '@/util/mysql'
 
-const getFun = async ({ database }: types.ConfigParams) => {
-  const sql = `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "${database}"`
+const getFun = async () => {
+  const sql = `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "knd_tool"`
   const data = (await kndToolQuery(sql)) as Array<types.ConfigTable>
   const format = data.map(item => item.TABLE_NAME)
-  const isSame = databaseList[database].length === format.length
+  const isSame = databaseList.length === format.length
   return isSame
 }
 
-export const GET = async (request: NextRequest) => {
-  const query = request.nextUrl.searchParams
-  const database = query.get('database')
-  const params = { database }
-  const { isSuccess, data, error } = await tryCatch(getFun, params)
+export const GET = async () => {
+  const { isSuccess, data, error } = await tryCatch(getFun)
   if (isSuccess)
     return response(200, 200, data, `${data ? '不' : ''}需要对表进行修改`)
   return response(200, 400, false, error.message)
 }
 
-const postFun = async ({ database }: types.ConfigParams) => {
+const postFun = async () => {
   await Promise.all(
-    databaseList[database].map(table => {
+    databaseList.map(table => {
       const declare: Array<string> = []
       for (const key in table.data) {
         const isPrimaryKey = key === table.primaryKey
@@ -44,16 +40,14 @@ const postFun = async ({ database }: types.ConfigParams) => {
   return true
 }
 
-export const POST = async (request: NextRequest) => {
-  const req = await request.json()
-  const { isSuccess, error } = await tryCatch(postFun, req)
+export const POST = async () => {
+  const { isSuccess, error } = await tryCatch(postFun)
   if (isSuccess) return response(200, 200, true)
   return response(200, 400, false, error.message)
 }
 
 const putFun = async () => {
   throw new Error('暂无待运行脚本')
-  return true
 }
 
 export const PUT = async () => {

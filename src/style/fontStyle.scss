@@ -4,3 +4,16 @@
     url('~@/asset/font/agendaKing/agendaKing.woff2') format('woff2');
   font-display: fallback;
 }
+
+@font-face {
+  font-family: 'iconFont';
+  src: url('~@/asset/font/iconFont/icomoon.eot?x39uyq');
+  src: url('~@/asset/font/iconFont/icomoon.eot?x39uyq#iefix')
+      format('embedded-opentype'),
+    url('~@/asset/font/iconFont/icomoon.ttf?x39uyq') format('truetype'),
+    url('~@/asset/font/iconFont/icomoon.woff?x39uyq') format('woff'),
+    url('~@/asset/font/iconFont/icomoon.svg?x39uyq#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
