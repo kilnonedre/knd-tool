@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import mainLayoutTypes from '@/view/mainLayout/mainLayoutType.d'
+import 'react-photo-view/dist/react-photo-view.css'
 import MainLayout from '@/view/mainLayout'
 
 export const metadata: Metadata = {

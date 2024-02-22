@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import styles from './modalStyle.module.scss'
 import types from './modalType.d'
-import { type ElementRef, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import { Image, Skeleton } from '@nextui-org/react'
@@ -11,26 +11,25 @@ import Icon from '@/component/icon'
 import { GetFileById } from '@/api/gallery'
 import { ConfigGalleryPaint } from '@/app/api/gallery/paints/fileType.d'
 import { toast } from 'sonner'
+import { PhotoProvider, PhotoView } from 'react-photo-view'
 
 const Modal = (props: types.ConfigProps) => {
   const router = useRouter()
-  const dialogRef = useRef<ElementRef<'dialog'>>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
   const [paint, setPaint] = useState<ConfigGalleryPaint | null>(null)
   const [isLoaded, setIsLoad] = useState(false)
 
   useEffect(() => {
-    if (dialogRef.current && !dialogRef.current.open) {
+    if (modalRef.current) {
       requestAnimationFrame(() => {
         init()
-        dialogRef.current?.showModal()
-        document.body.style.overflowY = 'hidden'
+        document.body.style.overflow = 'hidden'
       })
       return () => {
-        dialogRef.current?.close()
-        document.body.style.overflowY = 'auto'
+        document.body.style.overflow = 'auto'
       }
     }
-  }, [dialogRef])
+  }, [modalRef])
 
   const init = async () => {
     const response = await GetFileById({ id: props.id })
@@ -46,36 +45,33 @@ const Modal = (props: types.ConfigProps) => {
 
   return createPortal(
     <div className={styles['modal__mask']}>
-      <dialog
-        ref={dialogRef}
-        className={styles['modal__panel']}
-        onClose={onDismiss}
-      >
+      <div ref={modalRef} className={styles['modal__panel']}>
         <div className={styles['modal__close']}>
           <Icon font="" cursor="pointer" onPress={onDismiss} />
         </div>
         <div className={styles['modal__main']}>
           <div className={styles['main']}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-            praesentium amet corrupti quos, debitis consectetur. Quidem, saepe
-            ut? Veritatis, labore?
             <div className={styles['main-image']}>
               <Skeleton
                 isLoaded={isLoaded}
                 className={styles['main-image-skeleton']}
                 style={{ overflow: isLoaded ? 'initial' : 'hidden' }}
               >
-                <Image
-                  shadow="sm"
-                  alt="NextUI hero Image"
-                  src={paint?.uri}
-                  onLoad={() => setIsLoad(true)}
-                />
+                <PhotoProvider>
+                  <PhotoView src={paint?.uri}>
+                    <Image
+                      shadow="sm"
+                      alt="NextUI hero Image"
+                      src={paint?.uri}
+                      onLoad={() => setIsLoad(true)}
+                    />
+                  </PhotoView>
+                </PhotoProvider>
               </Skeleton>
             </div>
           </div>
         </div>
-      </dialog>
+      </div>
     </div>,
     document.getElementById('modal-root')!
   )
