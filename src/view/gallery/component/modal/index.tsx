@@ -6,7 +6,7 @@ import types from './modalType.d'
 import { type ElementRef, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createPortal } from 'react-dom'
-import { Image } from '@nextui-org/react'
+import { Image, Skeleton } from '@nextui-org/react'
 import Icon from '@/component/icon'
 import { GetFileById } from '@/api/gallery'
 import { ConfigGalleryPaint } from '@/app/api/gallery/paints/fileType.d'
@@ -16,6 +16,7 @@ const Modal = (props: types.ConfigProps) => {
   const router = useRouter()
   const dialogRef = useRef<ElementRef<'dialog'>>(null)
   const [paint, setPaint] = useState<ConfigGalleryPaint | null>(null)
+  const [isLoaded, setIsLoad] = useState(false)
 
   useEffect(() => {
     if (dialogRef.current && !dialogRef.current.open) {
@@ -58,8 +59,19 @@ const Modal = (props: types.ConfigProps) => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
             praesentium amet corrupti quos, debitis consectetur. Quidem, saepe
             ut? Veritatis, labore?
-            <div className={styles['modal-image']}>
-              <Image shadow="sm" alt="NextUI hero Image" src={paint?.uri} />
+            <div className={styles['main-image']}>
+              <Skeleton
+                isLoaded={isLoaded}
+                className={styles['main-image-skeleton']}
+                style={{ overflow: isLoaded ? 'initial' : 'hidden' }}
+              >
+                <Image
+                  shadow="sm"
+                  alt="NextUI hero Image"
+                  src={paint?.uri}
+                  onLoad={() => setIsLoad(true)}
+                />
+              </Skeleton>
             </div>
           </div>
         </div>

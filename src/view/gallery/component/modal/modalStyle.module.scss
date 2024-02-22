@@ -36,4 +36,10 @@
 .main {
   width: 80%;
   margin: 0 auto;
+  &-image {
+    &-skeleton {
+      aspect-ratio: 1/1.4;
+      border-radius: 0.875rem;
+    }
+  }
 }
