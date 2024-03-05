@@ -9,7 +9,8 @@ export const UploadFile = (params: fileTypes.ConfigPostParams) =>
   Post(splicePath('/paints'), params)
 
 // 获取图片信息
-export const GetFile = () => Get(splicePath('/paints'))
+export const GetFile = (params: fileTypes.ConfigGetParams) =>
+  Get(splicePath('/paints'), params)
 
 // 根据id获取图片信息
 export const GetFileById = (params: fileIdTypes.ConfigParams) =>

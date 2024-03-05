@@ -1,4 +1,4 @@
-import { response, formatFormData, dataNow } from '@/util/backend'
+import { response, formatFormData, dataNow, getQueryObj } from '@/util/backend'
 import { tryCatch } from '@/util/universal'
 import types from './fileType.d'
 import { NextRequest } from 'next/server'
@@ -47,7 +47,7 @@ const postFun = async (request: NextRequest) => {
   const params = {
     inputBuffer: buffer,
     outputPath: thumbnailPath,
-    targetWidth: 800,
+    targetWidth: 600,
   }
   const { targetWidth, targetHeight } = await compressAndSaveImage(params)
   const sql =
@@ -76,14 +76,16 @@ export const POST = async (request: NextRequest) => {
   return response(200, 400, false, error.message)
 }
 
-const getFun = async () => {
-  const sql = 'SELECT * FROM gallery_paints'
-  const data = await kndToolQuery(sql)
+const getFun = async ({ size, page }: types.ConfigGetParams) => {
+  const sql = 'SELECT * FROM gallery_paints LIMIT ? OFFSET ?'
+  const offset = (Number(page) - 1) * 10
+  const data = await kndToolQuery(sql, [Number(size), offset])
   return data
 }
 
-export const GET = async () => {
-  const { isSuccess, data, error } = await tryCatch(getFun)
+export const GET = async (request: NextRequest) => {
+  const query = getQueryObj(request, ['page', 'size'])
+  const { isSuccess, data, error } = await tryCatch(getFun, query)
   if (isSuccess) return response(200, 200, data)
   return response(200, 400, false, error.message)
 }

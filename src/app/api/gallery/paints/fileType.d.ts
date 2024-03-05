@@ -17,3 +17,8 @@ export interface ConfigGalleryPaint {
   create_time: number
   update_time: number
 }
+
+export interface ConfigGetParams {
+  size: number
+  page: number
+}

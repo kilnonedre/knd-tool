@@ -7,6 +7,7 @@ import { Image } from '@nextui-org/react'
 import { GetFile } from '@/api/gallery'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import fileTypes from '@/app/api/gallery/paints/fileType.d'
 
 const Waterfall = (props: types.ConfigProps) => {
   const gridContainerRef = useRef<HTMLDivElement>(null)
@@ -15,30 +16,58 @@ const Waterfall = (props: types.ConfigProps) => {
   >([])
   const [columnWidth, setColumnWidth] = useState<number>(0)
   const [imageList, setImageList] = useState<Array<types.ConfigImage>>([])
+  const [imageGetParams, setImageGetParams] =
+    useState<fileTypes.ConfigGetParams>({
+      page: 1,
+      size: 10,
+    })
+  const [loadImage, setLoadImage] = useState<boolean>(true)
 
   const router = useRouter()
 
   useEffect(() => {
     renderImageList()
     const gridContainer = gridContainerRef.current
-    if (!gridContainer) {
-      return
-    }
+    if (!gridContainer) return
     const handleResize = () => {
       getColumnCount()
     }
     handleResize()
     window.addEventListener('resize', handleResize)
 
+    const footer = document.getElementById('galleryFooter')
+    const intersectionObserver = new IntersectionObserver(entries => {
+      const isInView = entries.some(entry => entry.isIntersecting)
+      isInView &&
+        setImageGetParams(prevParams => ({
+          ...prevParams,
+          page: prevParams.page + 1,
+        }))
+    })
+    footer && intersectionObserver.observe(footer)
     return () => {
       window.removeEventListener('resize', handleResize)
+      footer && intersectionObserver.unobserve(footer)
     }
   }, [])
 
+  useEffect(() => {
+    loadImage && renderImageList()
+  }, [imageGetParams.page])
+
   const renderImageList = async () => {
-    const response = await GetFile()
+    const response = await GetFile(imageGetParams)
     const { code, data, msg } = await response.json()
     if (code !== 200) return toast.error(msg)
+    if (data.length === 0) {
+      setImageGetParams(prevParams => ({
+        ...prevParams,
+        page: imageGetParams.page,
+      }))
+      setLoadImage(false)
+      return
+    }
+    setLoadImage(true)
     const imgList = data.map((item: types.ConfigImage) => {
       return {
         id: item.id,
@@ -50,7 +79,10 @@ const Waterfall = (props: types.ConfigProps) => {
         thumbnail_height: item.thumbnail_height,
       }
     })
-    setImageList(imgList)
+    setImageList(prevParams =>
+      imageGetParams.page >= 2 ? [...prevParams, ...imgList] : imgList
+    )
+    console.log('setIsInfiniteLoad', imageGetParams.page)
   }
 
   const getColumnCount = async () => {
@@ -72,11 +104,11 @@ const Waterfall = (props: types.ConfigProps) => {
   }, [columnWidth, imageList])
 
   useEffect(() => {
-    renderImageList()
+    // renderImageList()
   }, [props.reload])
 
   const waterfallLayout = () => {
-    if (!columnWidth) return
+    if (!columnWidth || waterfallList.length === 0) return
     const heightList: Array<number> = Array.from(
       { length: waterfallList.length },
       () => 0
@@ -120,6 +152,7 @@ const Waterfall = (props: types.ConfigProps) => {
                   isZoomed
                   src={water.thumbnail}
                   key={water.id}
+                  loading="lazy"
                   alt="demo"
                   onClick={() => {
                     router.push(`/gallery/paint/${water.id}`)

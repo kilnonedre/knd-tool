@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 
 export const response = (
   status: number,
@@ -21,3 +21,12 @@ export const getFilename = (file: string) =>
   file.substring(0, file.lastIndexOf('.'))
 
 export const getFileExtension = (file: string) => file.split('.').pop()
+
+export const getQueryObj = (request: NextRequest, array: Array<string>) => {
+  const query = request.nextUrl.searchParams
+  const result = {} as { [key: string]: string | null }
+  array.map(arr => {
+    result[arr] = query.get(arr)
+  })
+  return result
+}

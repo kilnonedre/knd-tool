@@ -55,7 +55,10 @@ const Modal = (props: types.ConfigProps) => {
               <Skeleton
                 isLoaded={isLoaded}
                 className={styles['main-image-skeleton']}
-                style={{ overflow: isLoaded ? 'initial' : 'hidden' }}
+                style={{
+                  overflow: isLoaded ? 'initial' : 'hidden',
+                  aspectRatio: isLoaded ? 'auto' : '1/1.4',
+                }}
               >
                 <PhotoProvider>
                   <PhotoView src={paint?.uri}>
